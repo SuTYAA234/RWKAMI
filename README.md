@@ -91,7 +91,7 @@ Tidak perlu instalasi apa pun.
 
 1. **Unduh/clone** repositori ini.
    ```bash
-   git clone https://github.com/<username>/rwkami.git
+   git clone https://github.com/SuTYAA234/RWKAMI.git
    cd rwkami
    ```
 2. **Buka `index.html`** langsung di browser (double click), **atau** jalankan local server sederhana:
