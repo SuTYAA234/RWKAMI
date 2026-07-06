@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal RWKami</title>
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   DESIGN SYSTEM
+   ========================================================================== */
+:root {
+    --brand: #4f46e5;
+    --brand-dark: #4338ca;
+    --brand-light: #eef2ff;
+    --accent: #059669;
+    --accent-dark: #047857;
+    --accent-light: #ecfdf5;
+    --gold: #d97706;
+    --gold-light: #fffbeb;
+    --danger: #dc2626;
+    --danger-light: #fef2f2;
+    --info: #2563eb;
+    --info-light: #eff6ff;
+
+    --ink: #0f172a;
+    --body-text: #475569;
+    --muted: #94a3b8;
+    --line: #e2e8f0;
+    --line-strong: #cbd5e1;
+    --bg: #f6f7fb;
+    --surface: #ffffff;
+    --surface-alt: #f1f5f9;
+
+    --civic: #9f1239;
+    --civic-light: #fff1f2;
+
+    --font-heading: 'Outfit', sans-serif;
+    --font-serif: 'Fraunces', serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-full: 999px;
+
+    --shadow-sm: 0 1px 2px rgba(15,23,42,.05), 0 1px 3px rgba(15,23,42,.06);
+    --shadow-md: 0 8px 20px -6px rgba(15,23,42,.12);
+    --shadow-lg: 0 24px 48px -12px rgba(15,23,42,.18);
+    --shadow-glow-brand: 0 8px 24px -6px rgba(79,70,229,.35);
+    --shadow-glow-accent: 0 8px 24px -6px rgba(5,150,105,.3);
+
+    --ease: .2s cubic-bezier(.4,0,.2,1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+    background: var(--bg);
+    color: var(--body-text);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    line-height: 1.55;
+}
+h1,h2,h3,h4,h5,h6 { font-family: var(--font-heading); color: var(--ink); font-weight: 700; letter-spacing: -0.01em; }
+a { color: var(--brand); text-decoration: none; transition: color var(--ease); }
+a:hover { color: var(--brand-dark); }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(14px);} to { opacity: 1; transform: translateY(0);} }
+.animate-in { animation: fadeUp .45s ease forwards; }
+
+/* ==========================================================================
+   LAYOUT
+   ========================================================================== */
+.app-shell { display: flex; flex-direction: column; min-height: 100vh; }
+
+.site-header {
+    background: rgba(255,255,255,.85);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line);
+    position: sticky; top: 0; z-index: 200;
+}
+.header-inner {
+    max-width: 1180px; margin: 0 auto; padding: 0.85rem 1.5rem;
+    display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;
+}
+.brand { display: flex; align-items: center; gap: .65rem; cursor: pointer; }
+.brand-mark {
+    width: 38px; height: 38px; border-radius: 11px;
+    background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-family: var(--font-heading); font-weight: 800; font-size: 1.05rem;
+    box-shadow: var(--shadow-glow-brand);
+}
+.brand-name { font-family: var(--font-heading); font-size: 1.25rem; font-weight: 800; color: var(--ink); letter-spacing: -0.02em; }
+
+.main-nav { display: flex; align-items: center; gap: .35rem; flex: 1; padding-left: 1rem; }
+.nav-link {
+    font-size: .9rem; font-weight: 600; color: var(--body-text); padding: .5rem .85rem;
+    border-radius: var(--radius-sm); transition: var(--ease); display: inline-flex; align-items: center; gap: .4rem;
+}
+.nav-link:hover { background: var(--surface-alt); color: var(--ink); }
+.nav-link.is-active { background: var(--brand-light); color: var(--brand-dark); }
+
+.header-actions { display: flex; align-items: center; gap: .6rem; }
+.user-chip {
+    display: flex; align-items: center; gap: .6rem; background: var(--surface-alt);
+    padding: .35rem .9rem .35rem .35rem; border-radius: var(--radius-full); border: 1px solid var(--line);
+}
+.user-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--info) 0%, var(--brand) 100%);
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: .8rem; text-transform: uppercase;
+}
+.user-name { font-size: .85rem; font-weight: 600; color: var(--ink); }
+.role-pill { font-size: .65rem; font-weight: 800; padding: 2px 7px; border-radius: 6px; text-transform: uppercase; letter-spacing: .03em; }
+.role-admin { background: var(--danger-light); color: var(--danger); }
+.role-resident { background: var(--info-light); color: var(--info); }
+
+.site-main { flex: 1; max-width: 1180px; width: 100%; margin: 0 auto; padding: 2.25rem 1.5rem 4rem; }
+
+.site-footer { border-top: 1px solid var(--line); background: var(--surface); padding: 2rem 1.5rem; margin-top: auto; }
+.footer-inner { max-width: 1180px; margin: 0 auto; text-align: center; }
+.footer-copy { font-size: .85rem; color: var(--muted); margin-bottom: .65rem; }
+.beta-notice {
+    max-width: 680px; margin: 0 auto; font-size: .8rem; line-height: 1.7; color: var(--muted);
+    display: flex; align-items: flex-start; gap: .4rem; justify-content: center; flex-wrap: wrap;
+}
+.beta-notice i { font-size: 1rem; color: var(--gold); margin-top: 1px; }
+.beta-notice a { color: var(--brand); font-weight: 700; }
+
+@media (max-width: 860px) {
+    .main-nav { display: none; }
+    .user-name, .role-pill { display: none; }
+}
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+.btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+    font-family: var(--font-body); font-weight: 600; font-size: .9rem;
+    padding: .7rem 1.4rem; border-radius: var(--radius-sm); border: none; cursor: pointer;
+    transition: transform var(--ease), box-shadow var(--ease), background var(--ease), filter var(--ease);
+    white-space: nowrap;
+}
+.btn-primary { background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%); color: #fff; box-shadow: var(--shadow-glow-brand); }
+.btn-primary:hover { transform: translateY(-2px); filter: brightness(1.06); }
+.btn-accent { background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%); color: #fff; box-shadow: var(--shadow-glow-accent); }
+.btn-accent:hover { transform: translateY(-2px); filter: brightness(1.06); }
+.btn-secondary { background: var(--surface); color: var(--ink); border: 1.5px solid var(--line); }
+.btn-secondary:hover { border-color: var(--line-strong); background: var(--surface-alt); }
+.btn-danger { background: linear-gradient(135deg, #ef4444 0%, var(--danger) 100%); color: #fff; }
+.btn-danger:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(220,38,38,.28); }
+.btn-sm { padding: .45rem 1rem; font-size: .8rem; border-radius: 8px; }
+.btn-block { width: 100%; }
+
+/* ==========================================================================
+   FORMS
+   ========================================================================== */
+.form-group { margin-bottom: 1.35rem; }
+.form-label { display: block; margin-bottom: .45rem; font-weight: 700; font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; color: var(--body-text); }
+.form-hint { font-size: .8rem; color: var(--muted); margin-top: .5rem; line-height: 1.5; }
+.form-control {
+    width: 100%; background: var(--surface-alt); border: 1.5px solid var(--line);
+    border-radius: var(--radius-sm); padding: .75rem 1rem; color: var(--ink);
+    font-family: var(--font-body); font-size: .95rem; transition: var(--ease);
+}
+.form-control:focus { outline: none; border-color: var(--brand); background: #fff; box-shadow: 0 0 0 4px var(--brand-light); }
+select.form-control {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.1rem; padding-right: 2.4rem; cursor: pointer;
+}
+textarea.form-control { resize: vertical; min-height: 130px; font-family: var(--font-body); }
+.input-money { position: relative; }
+.input-money::before {
+    content: "Rp"; position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);
+    font-family: var(--font-mono); font-size: .9rem; color: var(--muted); font-weight: 700; z-index: 1;
+}
+.input-money input { padding-left: 2.6rem; font-family: var(--font-mono); font-weight: 600; font-size: 1.02rem; }
+
+/* ==========================================================================
+   CARDS
+   ========================================================================== */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
+.card-pad { padding: 2.25rem; }
+
+.auth-wrapper { display: flex; justify-content: center; padding: 2rem 0 3rem; }
+.auth-card { width: 100%; max-width: 440px; padding: 2.75rem 2.25rem; }
+.auth-header { text-align: center; margin-bottom: 2rem; }
+.auth-title { font-size: 1.7rem; font-weight: 800; margin-top: .85rem; }
+.auth-subtitle { color: var(--muted); font-size: .9rem; margin-top: .4rem; }
+.auth-footer { text-align: center; margin-top: 1.4rem; font-size: .88rem; color: var(--muted); }
+.demo-hint { text-align: center; margin-top: .75rem; font-size: .75rem; color: var(--muted); background: var(--surface-alt); padding: .6rem .9rem; border-radius: var(--radius-sm); }
+
+.form-container-card { max-width: 720px; margin: 0 auto; padding: 2.5rem; }
+.form-header-title { font-size: 1.6rem; font-weight: 800; margin-bottom: .4rem; }
+.form-header-desc { color: var(--muted); margin-bottom: 1.75rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--line); font-size: .92rem; }
+
+/* Widgets */
+.widgets-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px,1fr)); gap: 1.25rem; margin-bottom: 2.5rem; }
+.widget-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 1.4rem 1.5rem; display: flex; align-items: center; gap: 1.1rem; box-shadow: var(--shadow-sm); transition: var(--ease); }
+.widget-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.widget-icon { width: 50px; height: 50px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; color: #fff; flex-shrink: 0; }
+.widget-details h4 { font-size: .74rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: .3rem; font-weight: 700; }
+.widget-details .number { font-size: 1.85rem; font-weight: 800; font-family: var(--font-heading); color: var(--ink); line-height: 1; }
+.bg-indigo { background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%); }
+.bg-amber { background: linear-gradient(135deg, #f59e0b 0%, var(--gold) 100%); }
+.bg-blue { background: linear-gradient(135deg, #3b82f6 0%, var(--info) 100%); }
+.bg-emerald { background: linear-gradient(135deg, #10b981 0%, var(--accent-dark) 100%); }
+
+/* Filters */
+.list-controls { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.filter-group { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; }
+.filter-label { font-weight: 700; font-size: .82rem; color: var(--muted); }
+.filter-btn { background: var(--surface); border: 1.5px solid var(--line); color: var(--body-text); padding: .45rem .95rem; border-radius: var(--radius-sm); font-size: .82rem; font-weight: 600; cursor: pointer; transition: var(--ease); }
+.filter-btn:hover { border-color: var(--line-strong); color: var(--ink); }
+.filter-btn.active { background: var(--brand); border-color: var(--brand); color: #fff; box-shadow: var(--shadow-glow-brand); }
+
+/* Ticket cards */
+.tickets-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; }
+@media (min-width: 720px) { .tickets-grid { grid-template-columns: repeat(2,1fr);} }
+@media (min-width: 1080px) { .tickets-grid { grid-template-columns: repeat(3,1fr);} }
+.ticket-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 1.5rem; display: flex; flex-direction: column; height: 100%; transition: var(--ease); box-shadow: var(--shadow-sm); }
+.ticket-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--line-strong); }
+.ticket-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: .9rem; gap: .5rem; }
+.badge { padding: .32rem .7rem; border-radius: var(--radius-full); font-size: .68rem; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; display: inline-flex; align-items: center; gap: .3rem; }
+.badge-laporan { background: var(--brand-light); color: var(--brand-dark); }
+.badge-pengaduan { background: var(--danger-light); color: var(--danger); }
+.badge-saran { background: var(--accent-light); color: var(--accent-dark); }
+.status-badge { padding: .28rem .6rem; border-radius: 6px; font-size: .65rem; font-weight: 800; text-transform: uppercase; }
+.status-pending { background: var(--gold-light); color: var(--gold); }
+.status-proses { background: var(--info-light); color: var(--info); }
+.status-selesai { background: var(--accent-light); color: var(--accent-dark); }
+.ticket-title { font-size: 1.08rem; font-weight: 700; margin-bottom: .6rem; line-height: 1.4; color: var(--ink); }
+.ticket-desc { color: var(--body-text); font-size: .9rem; margin-bottom: 1.25rem; flex-grow: 1; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.ticket-meta { border-top: 1px solid var(--line); padding-top: .9rem; margin-top: auto; display: flex; justify-content: space-between; align-items: center; font-size: .78rem; color: var(--muted); }
+.meta-author { display: flex; align-items: center; gap: .5rem; }
+.meta-avatar { width: 24px; height: 24px; border-radius: 50%; background: var(--surface-alt); border: 1px solid var(--line); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: .7rem; text-transform: uppercase; color: var(--body-text); }
+.meta-date { display: flex; align-items: center; gap: .3rem; }
+.ticket-actions { display: flex; justify-content: flex-end; align-items: center; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+.admin-action-select { padding: .3rem 1.6rem .3rem .6rem; font-size: .72rem; border-radius: 7px; height: 32px; }
+
+.alert { padding: .9rem 1.15rem; border-radius: var(--radius-sm); margin-bottom: 1.4rem; display: flex; align-items: center; gap: .7rem; font-weight: 600; font-size: .88rem; border: 1px solid transparent; }
+.alert-success { background: var(--accent-light); color: var(--accent-dark); border-color: #a7f3d0; }
+.alert-danger { background: var(--danger-light); color: var(--danger); border-color: #fecaca; }
+
+.empty-state { text-align: center; padding: 3.5rem 2rem; grid-column: 1/-1; background: var(--surface-alt); border: 1.5px dashed var(--line-strong); border-radius: var(--radius-lg); }
+.empty-icon { font-size: 2.6rem; color: var(--muted); margin-bottom: 1rem; }
+.empty-title { font-size: 1.3rem; font-weight: 800; margin-bottom: .4rem; }
+.empty-desc { color: var(--muted); max-width: 380px; margin: 0 auto 1.25rem auto; font-size: .9rem; }
+
+.dashboard-hero { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.25rem; gap: 1.5rem; flex-wrap: wrap; }
+.welcome-title { font-size: 1.9rem; font-weight: 800; letter-spacing: -.02em; margin-bottom: .2rem; }
+.welcome-desc { color: var(--muted); font-size: .95rem; }
+.text-brand { color: var(--brand); }
+
+/* ==========================================================================
+   LANDING PAGE
+   ========================================================================== */
+.hero-panel {
+    position: relative; overflow: hidden; border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, #1e1b4b 0%, var(--brand-dark) 55%, var(--accent-dark) 130%);
+    color: #fff; padding: 3.5rem 3rem 5.5rem; box-shadow: var(--shadow-lg);
+}
+.hero-panel::before {
+    content: ""; position: absolute; inset: 0;
+    background-image: radial-gradient(circle at 85% 0%, rgba(255,255,255,.12), transparent 45%), radial-gradient(circle at 0% 100%, rgba(16,185,129,.18), transparent 45%);
+    pointer-events: none;
+}
+.hero-content { position: relative; z-index: 1; max-width: 680px; }
+.eyebrow-chip {
+    display: inline-flex; align-items: center; gap: .5rem; font-size: .72rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: .08em; color: #fde68a; background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.2); padding: .4rem .85rem; border-radius: var(--radius-full); margin-bottom: 1.5rem;
+}
+.eyebrow-chip i { font-size: .95rem; }
+.hero-title { font-family: var(--font-serif); font-size: clamp(2.2rem, 4.6vw, 3.35rem); font-weight: 700; line-height: 1.12; color: #fff; margin-bottom: 1.1rem; letter-spacing: -0.01em; }
+.hero-title span { background: linear-gradient(135deg, #a5b4fc 0%, #6ee7b7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.hero-desc { font-size: 1.05rem; line-height: 1.7; color: #e2e8f0; margin-bottom: 2rem; }
+.hero-actions { display: flex; gap: .85rem; flex-wrap: wrap; }
+.hero-actions .btn { padding: .85rem 1.6rem; font-size: .95rem; }
+.hero-actions .btn-secondary { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.28); color: #fff; }
+.hero-actions .btn-secondary:hover { background: rgba(255,255,255,.18); }
+
+.stats-overlap { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 1.25rem; max-width: 1000px; margin: -3.25rem auto 3.5rem; padding: 0 .5rem; position: relative; z-index: 2; }
+.stats-overlap .widget-card { box-shadow: var(--shadow-lg); }
+
+.section-heading { text-align: center; max-width: 640px; margin: 0 auto 2.75rem; }
+.section-heading h2 { font-size: 2rem; margin-bottom: .6rem; }
+.section-heading p { color: var(--muted); font-size: .98rem; }
+
+.feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px,1fr)); gap: 1.5rem; margin-bottom: 3.5rem; }
+.feature-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 1.9rem; box-shadow: var(--shadow-sm); transition: var(--ease); }
+.feature-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.feature-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.4rem; font-size: 1.5rem; color: #fff; }
+.feature-card h3 { font-size: 1.15rem; margin-bottom: .6rem; }
+.feature-card p { font-size: .9rem; color: var(--body-text); line-height: 1.65; }
+.feature-card.is-highlight { border: 1.5px solid var(--accent); background: linear-gradient(180deg, var(--accent-light) 0%, #ffffff 55%); }
+.feature-card .feature-cta { display: inline-flex; align-items: center; gap: .35rem; margin-top: 1rem; font-weight: 700; font-size: .85rem; color: var(--accent-dark); }
+
+.beta-banner {
+    background: var(--gold-light); border: 1px solid #fde68a; color: #92400e; border-radius: var(--radius-md);
+    padding: .95rem 1.3rem; display: flex; align-items: flex-start; gap: .7rem; font-size: .88rem; margin-bottom: 2rem;
+}
+.beta-banner i { font-size: 1.15rem; flex-shrink: 0; margin-top: 1px; color: var(--gold); }
+.beta-banner a { color: #92400e; font-weight: 800; text-decoration: underline; }
+
+/* Custom RW section */
+.custom-panel {
+    position: relative; overflow: hidden; border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #fff; padding: 3rem; display: grid; grid-template-columns: 1.1fr .9fr; gap: 2.5rem; align-items: center;
+    margin-bottom: 3.5rem; box-shadow: var(--shadow-lg);
+}
+@media (max-width: 780px) { .custom-panel { grid-template-columns: 1fr; padding: 2.25rem; } }
+.custom-panel::before {
+    content: ""; position: absolute; inset: 0;
+    background-image: radial-gradient(circle at 10% 10%, rgba(79,70,229,.25), transparent 45%), radial-gradient(circle at 95% 90%, rgba(5,150,105,.2), transparent 45%);
+    pointer-events: none;
+}
+.custom-panel-content { position: relative; z-index: 1; }
+.custom-panel h2 { color: #fff; font-size: 1.75rem; margin-bottom: .75rem; }
+.custom-panel p { color: #cbd5e1; font-size: .95rem; line-height: 1.7; margin-bottom: 1.5rem; }
+.custom-list { position: relative; z-index: 1; list-style: none; display: flex; flex-direction: column; gap: .85rem; }
+.custom-list li { display: flex; align-items: flex-start; gap: .65rem; font-size: .88rem; color: #e2e8f0; }
+.custom-list i { color: #6ee7b7; font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+
+/* ==========================================================================
+   DATA PASAR / DASAR HUKUM (halaman kalkulator)
+   ========================================================================== */
+.market-section { margin-bottom: 3rem; }
+.market-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.1rem; }
+.market-title { display: flex; align-items: center; gap: .6rem; font-weight: 700; color: var(--ink); font-size: .95rem; }
+.live-dot { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 4px rgba(34,197,94,.2); animation: pulse-dot 1.8s infinite; flex-shrink: 0; }
+@keyframes pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+.market-meta { display: flex; align-items: center; gap: .8rem; font-family: var(--font-mono); font-size: .76rem; color: var(--muted); }
+.refresh-btn { background: var(--surface-alt); border: 1px solid var(--line); color: var(--ink); font-size: .78rem; font-weight: 700; padding: .4rem .85rem; border-radius: var(--radius-full); cursor: pointer; display: inline-flex; align-items: center; gap: .4rem; transition: var(--ease); }
+.refresh-btn:hover { background: var(--surface); border-color: var(--line-strong); }
+.refresh-btn .spin-icon { display: inline-block; transition: transform .3s; }
+.refresh-btn.loading .spin-icon { animation: spin-anim .8s linear infinite; }
+@keyframes spin-anim { to { transform: rotate(360deg); } }
+
+.market-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+@media (max-width: 640px) { .market-grid { grid-template-columns: 1fr; } }
+.market-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 1.5rem 1.6rem; display: flex; align-items: center; justify-content: space-between; gap: 1.2rem; box-shadow: var(--shadow-sm); }
+.market-card.is-gold { background: linear-gradient(135deg, var(--gold-light) 0%, #ffffff 100%); border-color: #fde68a; }
+.market-label { font-family: var(--font-mono); font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: .5rem; font-weight: 700; }
+.market-card.is-gold .market-label { color: var(--gold); }
+.market-value { font-family: var(--font-mono); font-size: 1.55rem; font-weight: 800; color: var(--ink); line-height: 1.1; word-break: break-word; }
+.market-value.is-skeleton { color: transparent; background: linear-gradient(90deg, var(--line) 25%, #f1f5f9 50%, var(--line) 75%); background-size: 200% 100%; animation: shimmer-anim 1.4s infinite; border-radius: 6px; display: inline-block; min-width: 130px; }
+@keyframes shimmer-anim { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+.use-price-btn { flex-shrink: 0; background: var(--gold); color: #fff; border: none; font-size: .76rem; font-weight: 700; padding: .55rem 1rem; border-radius: var(--radius-full); cursor: pointer; transition: var(--ease); white-space: nowrap; }
+.use-price-btn:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.market-note { font-size: .78rem; color: var(--muted); margin-top: 1rem; line-height: 1.6; }
+.market-error { color: var(--danger); background: var(--danger-light); border: 1px solid #fecaca; padding: .8rem 1rem; border-radius: var(--radius-sm); font-size: .82rem; margin-bottom: 1rem; display: none; }
+.market-error.show { display: block; }
+
+.civic-section { margin-bottom: 3.5rem; }
+.pasal-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1.1rem; margin-top: 1.5rem; }
+@media (max-width: 760px) { .pasal-grid { grid-template-columns: 1fr; } }
+.pasal-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 1.6rem 1.5rem; position: relative; overflow: hidden; box-shadow: var(--shadow-sm); }
+.pasal-num-bg { position: absolute; top: -10px; right: 2px; font-family: var(--font-serif); font-size: 4.8rem; font-weight: 700; color: var(--surface-alt); line-height: 1; z-index: 0; pointer-events: none; }
+.pasal-tag { position: relative; z-index: 1; font-family: var(--font-mono); font-size: .68rem; letter-spacing: .06em; text-transform: uppercase; font-weight: 700; color: var(--civic); background: var(--civic-light); padding: .3rem .7rem; border-radius: var(--radius-full); display: inline-block; margin-bottom: .9rem; }
+.pasal-card.is-zakat .pasal-tag { color: var(--accent-dark); background: var(--accent-light); }
+.pasal-card h3 { position: relative; z-index: 1; font-family: var(--font-serif); font-size: 1.15rem; color: var(--ink); margin-bottom: .5rem; }
+.pasal-card p { position: relative; z-index: 1; font-size: .87rem; line-height: 1.7; color: var(--body-text); }
+.civic-note { margin-top: 1.5rem; display: flex; gap: 1.25rem; align-items: flex-start; background: #0f172a; color: #e2e8f0; padding: 1.6rem 1.75rem; border-radius: var(--radius-md); }
+.civic-note svg { flex-shrink: 0; width: 64px; height: 64px; }
+.civic-note p { margin: 0; font-size: .87rem; line-height: 1.7; color: #cbd5e1; }
+.civic-note strong { color: #fff; }
+
+.calc-action-row { display: flex; gap: .75rem; margin-top: .25rem; }
+.calc-action-row .btn-accent { flex: 1; }
+.print-btn { display: none; margin-top: 1.2rem; width: 100%; background: none; color: var(--accent-dark); border: 1.5px dashed var(--accent); border-radius: var(--radius-full); padding: .7rem; cursor: pointer; font-size: .82rem; font-weight: 700; }
+.print-btn.show { display: block; }
+.print-btn:hover { background: var(--accent-light); }
+
+@media print {
+    .site-header, .site-footer, .calc-tabs, .calc-action-row, .print-btn, .market-section, .civic-section, .calc-header, .beta-banner { display: none !important; }
+    body { background: #fff; }
+}
+
+/* ==========================================================================
+   KALKULATOR PAJAK & ZAKAT
+   ========================================================================== */
+.calc-header { margin-bottom: 2rem; }
+.calc-tabs { display: flex; gap: .5rem; flex-wrap: wrap; border-bottom: 1.5px solid var(--line); padding-bottom: 0; margin-top: 1.5rem; }
+.calc-tab {
+    font-family: var(--font-mono); font-size: .82rem; font-weight: 600; color: var(--muted);
+    background: none; border: none; padding: .8rem 1.1rem; cursor: pointer; border-bottom: 3px solid transparent;
+    transition: var(--ease); display: inline-flex; align-items: center; gap: .5rem;
+}
+.calc-tab .num { color: var(--accent); font-weight: 700; }
+.calc-tab:hover { color: var(--ink); background: var(--surface-alt); border-radius: 8px 8px 0 0; }
+.calc-tab.active { color: var(--ink); border-bottom-color: var(--accent); font-weight: 700; }
+
+.calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-top: 2rem; }
+@media (max-width: 820px) { .calc-grid { grid-template-columns: 1fr; gap: 2rem; } }
+
+.calc-panel-title { font-size: 1.55rem; margin-bottom: .5rem; }
+.calc-panel-desc { color: var(--muted); font-size: .9rem; line-height: 1.7; max-width: 560px; }
+
+.ledger {
+    background: linear-gradient(180deg,#ffffff 0%, var(--surface-alt) 100%);
+    border: 1px solid var(--line); border-top: 4px solid var(--gold);
+    border-radius: var(--radius-md); padding: 1.9rem 1.75rem; box-shadow: var(--shadow-md);
+}
+.ledger-label { font-family: var(--font-mono); font-size: .74rem; text-transform: uppercase; letter-spacing: .07em; color: var(--accent-dark); margin-bottom: .75rem; font-weight: 700; }
+.ledger-empty { color: var(--muted); font-size: .9rem; line-height: 1.7; padding-top: .5rem; }
+.ledger-amount { font-family: var(--font-mono); font-weight: 800; font-size: clamp(1.7rem, 3vw, 2.3rem); color: var(--accent-dark); margin: .3rem 0 1.4rem; word-break: break-word; line-height: 1.1; }
+.ledger-amount.warn { color: var(--danger); }
+.ledger-row { display: flex; justify-content: space-between; gap: .75rem; font-size: .86rem; padding: .7rem 0; border-bottom: 1px dashed var(--line-strong); color: var(--body-text); }
+.ledger-row:last-of-type { border-bottom: none; }
+.ledger-row span:last-child { font-family: var(--font-mono); font-weight: 700; color: var(--ink); text-align: right; }
+.ledger-note { margin-top: 1.4rem; font-size: .8rem; line-height: 1.6; color: var(--accent-dark); background: var(--accent-light); padding: .9rem 1rem; border-radius: var(--radius-sm); border-left: 3px solid var(--accent); }
+.calc-disclaimer { text-align: center; font-size: .82rem; color: var(--muted); max-width: 640px; margin: 2.5rem auto 0; line-height: 1.7; }
+
+.text-center { text-align: center; }
+.mt-4 { margin-top: 1rem; }
+.mb-4 { margin-bottom: 1rem; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+/* ==========================================================================
+   "DATABASE" via localStorage
+   ========================================================================== */
+const DB_USERS = 'rwkami_users';
+const DB_TICKETS = 'rwkami_tickets';
+const DB_SESSION = 'rwkami_session';
+const DB_SEED = 'rwkami_seeded_v2';
+
+function getUsers(){ return JSON.parse(localStorage.getItem(DB_USERS) || '[]'); }
+function saveUsers(u){ localStorage.setItem(DB_USERS, JSON.stringify(u)); }
+function getTickets(){ return JSON.parse(localStorage.getItem(DB_TICKETS) || '[]'); }
+function saveTickets(t){ localStorage.setItem(DB_TICKETS, JSON.stringify(t)); }
+function getSession(){ return JSON.parse(localStorage.getItem(DB_SESSION) || 'null'); }
+function setSession(s){ localStorage.setItem(DB_SESSION, JSON.stringify(s)); }
+function clearSession(){ localStorage.removeItem(DB_SESSION); }
+function newId(){ return Date.now() + Math.floor(Math.random()*1000); }
+
+function seedData(){
+    if(localStorage.getItem(DB_SEED)) return;
+    const users = [
+        {id:1, username:'admin', password:'admin123', fullname:'Pengurus RW', role:'admin'},
+        {id:2, username:'warga', password:'warga123', fullname:'Budi Santoso', role:'resident'}
+    ];
+    const now = Date.now();
+    const tickets = [
+        {id: newId(), user_id:2, type:'laporan', title:'Lampu Jalan Gang Mawar Mati', description:'Lampu jalan di depan rumah nomor 12 sudah mati sejak 3 hari lalu, gang menjadi gelap dan rawan.', status:'proses', created_at: now - 86400000*2},
+        {id: newId()+1, user_id:2, type:'pengaduan', title:'Tumpukan Sampah Liar', description:'Ada tumpukan sampah liar di dekat pos ronda yang menimbulkan bau tidak sedap.', status:'pending', created_at: now - 86400000},
+        {id: newId()+2, user_id:2, type:'saran', title:'Usulan Jadwal Kerja Bakti Rutin', description:'Mengusulkan kerja bakti rutin setiap Minggu pagi untuk menjaga kebersihan lingkungan.', status:'selesai', created_at: now - 86400000*5}
+    ];
+    saveUsers(users);
+    saveTickets(tickets);
+    localStorage.setItem(DB_SEED, '1');
+}
+
+/* ==========================================================================
+   Router
+   ========================================================================== */
+window.addEventListener('hashchange', render);
+window.addEventListener('DOMContentLoaded', () => { seedData(); render(); });
+
+function navigate(hash){ location.hash = hash; }
+
+function currentRoute(){
+    const hash = location.hash.replace('#','') || '/';
+    const [path, queryStr] = hash.split('?');
+    const params = new URLSearchParams(queryStr || '');
+    return { path, params };
+}
+
+function requireLogin(){
+    const s = getSession();
+    if(!s){ navigate('/login'); return null; }
+    return s;
+}
+
+function escapeHtml(str){
+    return String(str ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+function formatDate(ts){
+    const d = new Date(ts);
+    const pad = n => String(n).padStart(2,'0');
+    const bulan = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+    return `${pad(d.getDate())} ${bulan[d.getMonth()]} ${d.getFullYear()}, ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+function formatRp(n){
+    if(isNaN(n)) n = 0;
+    n = Math.round(n);
+    return 'Rp ' + n.toLocaleString('id-ID');
+}
+function parseMoney(el){
+    const raw = el.value.replace(/[^0-9]/g,'');
+    return raw ? parseInt(raw,10) : 0;
+}
+function formatMoneyLive(val){
+    const raw = val.replace(/[^0-9]/g,'');
+    return raw ? parseInt(raw,10).toLocaleString('id-ID') : '';
+}
+
+/* ==========================================================================
+   Layout shell
+   ========================================================================== */
+function navItem(path, label, icon){
+    const active = currentRoute().path === path;
+    return `<a href="#${path}" class="nav-link ${active ? 'is-active' : ''}"><i class='bx ${icon}'></i> ${label}</a>`;
+}
+
+function layout(innerHtml){
+    const s = getSession();
+    const app = document.getElementById('app');
+    app.innerHTML = `
+    <div class="app-shell">
+        <header class="site-header">
+            <div class="header-inner">
+                <div class="brand" onclick="navigate('/')">
+                    <div class="brand-mark">RW</div>
+                    <div class="brand-name">RWKami</div>
+                </div>
+                <nav class="main-nav">
+                    ${navItem('/', 'Beranda', 'bx-home-alt')}
+                    ${navItem('/kalkulator', 'Kalkulator Pajak &amp; Zakat', 'bx-calculator')}
+                    ${s ? navItem('/dashboard', 'Dashboard', 'bxs-dashboard') : ''}
+                </nav>
+                <div class="header-actions">
+                    ${s ? `
+                        <div class="user-chip">
+                            <div class="user-avatar">${escapeHtml(s.fullname.charAt(0))}</div>
+                            <span class="user-name">${escapeHtml(s.fullname)}</span>
+                            <span class="role-pill role-${s.role}">${s.role === 'admin' ? 'Admin' : 'Warga'}</span>
+                        </div>
+                        <button class="btn btn-secondary btn-sm" onclick="handleLogout()"><i class='bx bx-log-out'></i></button>
+                    ` : `
+                        <a href="#/login" class="btn btn-secondary btn-sm">Masuk</a>
+                        <a href="#/register" class="btn btn-primary btn-sm">Daftar</a>
+                    `}
+                </div>
+            </div>
+        </header>
+        <main class="site-main">${innerHtml}</main>
+        <footer class="site-footer">
+            <div class="footer-inner">
+                <div class="footer-copy">&copy; ${new Date().getFullYear()} Portal RWKami</div>
+                <div class="beta-notice">
+                    <i class='bx bx-info-circle'></i>
+                    Website ini masih versi <strong>Beta</strong> (uji coba) dan belum digunakan secara resmi.
+                    Jika RW/lingkungan Anda berminat menggunakan layanan ini, silakan hubungi
+                    <a href="mailto:i.2510393@unida.ac.id">i.2510393@unida.ac.id</a>.
+                </div>
+            </div>
+        </footer>
+    </div>`;
+}
+
+/* ==========================================================================
+   Main dispatcher
+   ========================================================================== */
+function render(){
+    const { path, params } = currentRoute();
+    if(path === '/') return renderLanding();
+    if(path === '/login') return renderLogin();
+    if(path === '/register') return renderRegister();
+    if(path === '/dashboard') return renderDashboard(params);
+    if(path === '/create') return renderCreate();
+    if(path === '/edit') return renderEdit(params.get('id'));
+    if(path === '/kalkulator') return renderKalkulator(params);
+    return renderLanding();
+}
+
+/* ==========================================================================
+   Landing Page
+   ========================================================================== */
+function renderLanding(){
+    const users = getUsers();
+    const tickets = getTickets();
+    const totalWarga = users.filter(u => u.role === 'resident').length;
+    const totalTickets = tickets.length;
+    const totalSelesai = tickets.filter(t => t.status === 'selesai').length;
+
+    layout(`
+    <div class="beta-banner">
+        <i class='bx bxs-flask'></i>
+        <span><strong>Versi Beta.</strong> Website ini masih tahap uji coba dan belum digunakan secara resmi oleh RW manapun. Berminat menggunakan layanan ini untuk lingkungan Anda? Hubungi <a href="mailto:i.2510393@unida.ac.id">i.2510393@unida.ac.id</a>.</span>
+    </div>
+
+    <div class="hero-panel animate-in">
+        <div class="hero-content">
+            <span class="eyebrow-chip"><i class='bx bxs-flask'></i> Beta &middot; Uji Coba</span>
+            <h1 class="hero-title">Harmoni Lingkungan dalam Genggaman <span>RWKami</span></h1>
+            <p class="hero-desc">Platform pelaporan, pengaduan ketertiban, penyampaian saran, hingga kalkulator pajak &amp; zakat bagi warga. Bersama-sama mewujudkan lingkungan Rukun Warga yang bersih, aman, tertib, dan sejahtera.</p>
+            <div class="hero-actions">
+                ${getSession() ? `
+                    <a href="#/dashboard" class="btn btn-primary"><i class='bx bxs-dashboard'></i> Masuk ke Dashboard Anda</a>
+                ` : `
+                    <a href="#/login" class="btn btn-primary"><i class='bx bx-log-in-circle'></i> Masuk Portal Warga</a>
+                    <a href="#/register" class="btn btn-secondary"><i class='bx bx-user-plus'></i> Registrasi Warga Baru</a>
+                `}
+                <a href="#/kalkulator" class="btn btn-secondary"><i class='bx bx-calculator'></i> Coba Kalkulator Pajak &amp; Zakat</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="stats-overlap">
+        <div class="widget-card">
+            <div class="widget-icon bg-indigo"><i class='bx bxs-user-detail'></i></div>
+            <div class="widget-details"><h4>Total Warga Terdaftar</h4><div class="number">${totalWarga}</div></div>
+        </div>
+        <div class="widget-card">
+            <div class="widget-icon bg-blue"><i class='bx bx-conversation'></i></div>
+            <div class="widget-details"><h4>Laporan / Aspirasi</h4><div class="number">${totalTickets}</div></div>
+        </div>
+        <div class="widget-card">
+            <div class="widget-icon bg-emerald"><i class='bx bx-check-double'></i></div>
+            <div class="widget-details"><h4>Berhasil Diselesaikan</h4><div class="number">${totalSelesai}</div></div>
+        </div>
+    </div>
+
+    <div class="section-heading">
+        <h2>Empat Layanan Utama RWKami</h2>
+        <p>Semua yang dibutuhkan warga untuk berpartisipasi aktif dalam lingkungan Rukun Warga, dalam satu portal.</p>
+    </div>
+    <div class="feature-grid">
+        <div class="feature-card">
+            <div class="feature-icon bg-indigo"><i class='bx bx-notepad'></i></div>
+            <h3>1. Laporan</h3>
+            <p>Laporkan kejadian aktual di sekitar lingkungan seperti infrastruktur rusak, lampu jalan padam, atau kendala fasilitas umum lainnya secara transparan.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon" style="background: linear-gradient(135deg,#ef4444,#dc2626);"><i class='bx bx-shield-quarter'></i></div>
+            <h3>2. Pengaduan</h3>
+            <p>Laporkan aduan terkait ketertiban umum, tumpukan sampah liar, kebisingan, atau ancaman keamanan warga demi penanganan cepat dari pengurus.</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon bg-emerald"><i class='bx bx-bulb'></i></div>
+            <h3>3. Saran</h3>
+            <p>Sampaikan ide kreatif atau usulan membangun untuk meningkatkan kenyamanan, keguyuban, serta kerukunan antar tetangga dalam area Rukun Warga.</p>
+        </div>
+        <div class="feature-card is-highlight">
+            <div class="feature-icon bg-emerald"><i class='bx bx-calculator'></i></div>
+            <h3>4. Kalkulator Pajak &amp; Zakat <span class="badge badge-saran" style="margin-left:.35rem;">Baru</span></h3>
+            <p>Hitung estimasi Pajak Final UMKM, Zakat Penghasilan, dan Zakat Maal secara instan dan privat — semua dihitung langsung di perangkat Anda.</p>
+            <a href="#/kalkulator" class="feature-cta">Coba sekarang <i class='bx bx-right-arrow-alt'></i></a>
+        </div>
+    </div>
+
+    <div class="custom-panel animate-in">
+        <div class="custom-panel-content">
+            <span class="eyebrow-chip" style="background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.2); color: #a5b4fc;"><i class='bx bx-customize'></i> Layanan Kustomisasi</span>
+            <h2>Ingin Portal Seperti Ini untuk RW Anda?</h2>
+            <p>RWKami dapat dikustomisasi sepenuhnya sesuai kebutuhan dan identitas lingkungan RW/RT masing-masing &mdash; mulai dari nama, logo, kategori laporan, hingga alur kerja pengurus. Cocok dijadikan portal digital resmi lingkungan Anda.</p>
+            <a href="mailto:i.2510393@unida.ac.id?subject=Kustomisasi%20Portal%20RWKami" class="btn btn-primary"><i class='bx bx-envelope'></i> Konsultasi Kustomisasi</a>
+        </div>
+        <ul class="custom-list">
+            <li><i class='bx bx-check-circle'></i> Nama, logo, dan warna tema disesuaikan identitas RW/RT Anda</li>
+            <li><i class='bx bx-check-circle'></i> Kategori laporan &amp; alur persetujuan bisa diatur ulang</li>
+            <li><i class='bx bx-check-circle'></i> Bisa ditambah fitur lain sesuai kebutuhan (mis. kas RT, agenda warga)</li>
+            <li><i class='bx bx-check-circle'></i> Bisa dihubungkan ke domain &amp; hosting milik RW sendiri</li>
+        </ul>
+    </div>
+    `);
+}
+
+/* ==========================================================================
+   Login
+   ========================================================================== */
+function renderLogin(){
+    layout(`
+    <div class="auth-wrapper">
+        <div class="card auth-card">
+            <div class="auth-header">
+                <div class="brand-mark" style="margin: 0 auto;">RW</div>
+                <h2 class="auth-title">Masuk Portal</h2>
+                <p class="auth-subtitle">Silakan masuk untuk mengakses layanan RWKami</p>
+            </div>
+            <div id="login-alert"></div>
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control" required placeholder="Masukkan username">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" required placeholder="Masukkan password">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Masuk</button>
+            </form>
+            <p class="auth-footer">Belum punya akun? <a href="#/register">Daftar di sini</a></p>
+            <div class="demo-hint">Demo admin: <b>admin</b>/<b>admin123</b> &middot; Demo warga: <b>warga</b>/<b>warga123</b></div>
+        </div>
+    </div>`);
+}
+
+function handleLogin(e){
+    e.preventDefault();
+    const f = e.target;
+    const username = f.username.value.trim();
+    const password = f.password.value;
+    const user = getUsers().find(u => u.username === username && u.password === password);
+    const alertBox = document.getElementById('login-alert');
+    if(!user){
+        alertBox.innerHTML = `<div class="alert alert-danger"><i class='bx bx-error-circle'></i><span>Username atau password salah.</span></div>`;
+        return;
+    }
+    setSession({user_id: user.id, username: user.username, fullname: user.fullname, role: user.role});
+    navigate('/dashboard');
+}
+
+/* ==========================================================================
+   Register
+   ========================================================================== */
+function renderRegister(){
+    layout(`
+    <div class="auth-wrapper">
+        <div class="card auth-card">
+            <div class="auth-header">
+                <div class="brand-mark" style="margin:0 auto;">RW</div>
+                <h2 class="auth-title">Registrasi Warga</h2>
+                <p class="auth-subtitle">Buat akun untuk mulai melapor dan memberi saran</p>
+            </div>
+            <div id="register-alert"></div>
+            <form onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label class="form-label">Nama Lengkap</label>
+                    <input type="text" name="fullname" class="form-control" required placeholder="Nama lengkap Anda">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control" required placeholder="Buat username">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" required placeholder="Buat password" minlength="4">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Daftar Sekarang</button>
+            </form>
+            <p class="auth-footer">Sudah punya akun? <a href="#/login">Masuk di sini</a></p>
+        </div>
+    </div>`);
+}
+
+function handleRegister(e){
+    e.preventDefault();
+    const f = e.target;
+    const fullname = f.fullname.value.trim();
+    const username = f.username.value.trim();
+    const password = f.password.value;
+    const alertBox = document.getElementById('register-alert');
+    const users = getUsers();
+    if(users.some(u => u.username === username)){
+        alertBox.innerHTML = `<div class="alert alert-danger"><i class='bx bx-error-circle'></i><span>Username sudah digunakan, silakan pilih yang lain.</span></div>`;
+        return;
+    }
+    const newUser = { id: newId(), username, password, fullname, role: 'resident' };
+    users.push(newUser);
+    saveUsers(users);
+    setSession({user_id: newUser.id, username: newUser.username, fullname: newUser.fullname, role: newUser.role});
+    navigate('/dashboard');
+}
+
+function handleLogout(){
+    clearSession();
+    navigate('/');
+}
+
+/* ==========================================================================
+   Dashboard
+   ========================================================================== */
+function renderDashboard(params){
+    const s = requireLogin();
+    if(!s) return;
+    const typeFilter = params.get('type') || 'all';
+    const statusFilter = params.get('status') || 'all';
+    const msg = params.get('msg') || '';
+
+    let alertHtml = '';
+    const msgMap = {
+        welcome: ['success','Selamat datang di Portal RWKami!'],
+        created: ['success','Laporan/aspirasi Anda berhasil dikirim!'],
+        updated: ['success','Perubahan laporan berhasil disimpan.'],
+        deleted: ['success','Laporan berhasil dihapus.'],
+        status_updated: ['success','Status laporan berhasil diperbarui.'],
+        unauthorized: ['danger','Anda tidak memiliki wewenang untuk melakukan aksi tersebut.'],
+        not_found: ['danger','Data tidak ditemukan.']
+    };
+    if(msgMap[msg]){
+        const [type, text] = msgMap[msg];
+        alertHtml = `<div class="alert alert-${type} animate-in" id="alert-banner">
+            <i class='bx ${type === 'success' ? 'bx-check-circle' : 'bx-error-circle'}' style="font-size:1.15rem;"></i>
+            <span>${text}</span>
+            <button onclick="document.getElementById('alert-banner').remove();" style="background:none;border:none;color:inherit;margin-left:auto;cursor:pointer;"><i class='bx bx-x' style="font-size:1.15rem;"></i></button>
+        </div>`;
+    }
+
+    const users = getUsers();
+    const allTickets = getTickets();
+    let tickets = s.role === 'admin' ? allTickets.slice() : allTickets.filter(t => t.user_id === s.user_id);
+
+    const stats = {total:0, pending:0, proses:0, selesai:0};
+    tickets.forEach(t => { stats[t.status] = (stats[t.status]||0)+1; stats.total++; });
+
+    if(typeFilter !== 'all') tickets = tickets.filter(t => t.type === typeFilter);
+    if(statusFilter !== 'all') tickets = tickets.filter(t => t.status === statusFilter);
+    tickets.sort((a,b) => b.created_at - a.created_at);
+
+    const filterLink = (type, status) => `#/dashboard?type=${type}&status=${status}`;
+
+    const cardsHtml = tickets.length === 0 ? `
+        <div class="empty-state">
+            <div class="empty-icon"><i class='bx bx-receipt'></i></div>
+            <h3 class="empty-title">Belum Ada Usulan</h3>
+            <p class="empty-desc">Tidak ditemukan laporan, pengaduan, atau saran yang sesuai dengan kriteria filter saat ini.</p>
+            ${s.role === 'resident' ? `<a href="#/create" class="btn btn-primary btn-sm"><i class='bx bx-plus-circle'></i> Buat Laporan Pertama</a>` : ''}
+        </div>
+    ` : tickets.map(t => {
+        const author = users.find(u => u.id === t.user_id);
+        const fullname = author ? author.fullname : 'Warga';
+        const iconClass = t.type === 'laporan' ? 'bx-notepad' : (t.type === 'pengaduan' ? 'bx-shield-quarter' : 'bx-bulb');
+        return `
+        <div class="ticket-card">
+            <div class="ticket-top">
+                <span class="badge badge-${t.type}"><i class='bx ${iconClass}'></i> ${t.type.charAt(0).toUpperCase()+t.type.slice(1)}</span>
+                <span class="status-badge status-${t.status}">${t.status === 'proses' ? 'Diproses' : t.status.charAt(0).toUpperCase()+t.status.slice(1)}</span>
+            </div>
+            <h3 class="ticket-title">${escapeHtml(t.title)}</h3>
+            <p class="ticket-desc">${escapeHtml(t.description)}</p>
+            <div class="ticket-meta">
+                <div class="meta-author">
+                    <div class="meta-avatar">${escapeHtml(fullname.charAt(0))}</div>
+                    <span>${escapeHtml(fullname)}</span>
+                </div>
+                <div class="meta-date"><i class='bx bx-calendar-event'></i><span>${formatDate(t.created_at)}</span></div>
+            </div>
+            <div class="ticket-actions">
+                ${s.role === 'admin' ? `
+                    <select class="form-control admin-action-select" onchange="handleUpdateStatus(${t.id}, this.value)">
+                        <option value="pending" ${t.status==='pending'?'selected':''}>Set Pending</option>
+                        <option value="proses" ${t.status==='proses'?'selected':''}>Set Proses</option>
+                        <option value="selesai" ${t.status==='selesai'?'selected':''}>Set Selesai</option>
+                    </select>
+                ` : ''}
+                ${(s.role === 'admin' || t.user_id === s.user_id) ? `
+                    <button class="btn btn-danger btn-sm" onclick="handleDeleteTicket(${t.id})" title="Hapus"><i class='bx bx-trash'></i> Hapus</button>
+                ` : ''}
+                ${(s.role === 'resident' && t.user_id === s.user_id) ? `
+                    <a href="#/edit?id=${t.id}" class="btn btn-secondary btn-sm" title="Edit"><i class='bx bx-edit-alt'></i> Edit</a>
+                ` : ''}
+            </div>
+        </div>`;
+    }).join('');
+
+    layout(`
+    ${alertHtml}
+    <div class="dashboard-hero">
+        <div>
+            <h1 class="welcome-title">Halo, <span class="text-brand">${escapeHtml(s.fullname)}</span></h1>
+            <p class="welcome-desc">${s.role === 'admin' ? 'Selamat datang di Panel Kontrol Pengurus RW. Pantau dan tindaklanjuti laporan warga.' : 'Pantau status laporan Anda atau ajukan laporan baru untuk area sekitar.'}</p>
+        </div>
+        ${s.role === 'resident' ? `<a href="#/create" class="btn btn-primary"><i class='bx bx-plus-circle'></i> Buat Laporan Baru</a>` : ''}
+    </div>
+
+    <div class="widgets-grid">
+        <div class="widget-card"><div class="widget-icon bg-indigo"><i class='bx bx-folder-open'></i></div><div class="widget-details"><h4>Semua Usulan</h4><div class="number">${stats.total}</div></div></div>
+        <div class="widget-card"><div class="widget-icon bg-amber"><i class='bx bx-time-five'></i></div><div class="widget-details"><h4>Menunggu</h4><div class="number">${stats.pending||0}</div></div></div>
+        <div class="widget-card"><div class="widget-icon bg-blue"><i class='bx bx-loader-circle'></i></div><div class="widget-details"><h4>Diproses</h4><div class="number">${stats.proses||0}</div></div></div>
+        <div class="widget-card"><div class="widget-icon bg-emerald"><i class='bx bx-check-double'></i></div><div class="widget-details"><h4>Selesai</h4><div class="number">${stats.selesai||0}</div></div></div>
+    </div>
+
+    <div class="list-controls">
+        <div class="filter-group">
+            <span class="filter-label">Kategori:</span>
+            <a href="${filterLink('all', statusFilter)}" class="filter-btn ${typeFilter==='all'?'active':''}">Semua</a>
+            <a href="${filterLink('laporan', statusFilter)}" class="filter-btn ${typeFilter==='laporan'?'active':''}">Laporan</a>
+            <a href="${filterLink('pengaduan', statusFilter)}" class="filter-btn ${typeFilter==='pengaduan'?'active':''}">Pengaduan</a>
+            <a href="${filterLink('saran', statusFilter)}" class="filter-btn ${typeFilter==='saran'?'active':''}">Saran</a>
+        </div>
+        <div class="filter-group">
+            <span class="filter-label">Status:</span>
+            <select class="form-control" style="width:auto; padding:.4rem 2.2rem .4rem .8rem; font-size:.82rem; height:38px;" onchange="navigate(this.value.replace('#',''))">
+                <option value="#/dashboard?type=${typeFilter}&status=all" ${statusFilter==='all'?'selected':''}>Semua Status</option>
+                <option value="#/dashboard?type=${typeFilter}&status=pending" ${statusFilter==='pending'?'selected':''}>Pending</option>
+                <option value="#/dashboard?type=${typeFilter}&status=proses" ${statusFilter==='proses'?'selected':''}>Diproses</option>
+                <option value="#/dashboard?type=${typeFilter}&status=selesai" ${statusFilter==='selesai'?'selected':''}>Selesai</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="tickets-grid">${cardsHtml}</div>
+    `);
+}
+
+function handleUpdateStatus(id, status){
+    const tickets = getTickets();
+    const t = tickets.find(t => t.id === id);
+    if(t){ t.status = status; saveTickets(tickets); }
+    navigate('/dashboard?msg=status_updated');
+    render();
+}
+
+function handleDeleteTicket(id){
+    if(!confirm('Apakah Anda yakin ingin menghapus data ini?')) return;
+    let tickets = getTickets();
+    tickets = tickets.filter(t => t.id !== id);
+    saveTickets(tickets);
+    navigate('/dashboard?msg=deleted');
+    render();
+}
+
+/* ==========================================================================
+   Create Ticket
+   ========================================================================== */
+function renderCreate(){
+    const s = requireLogin();
+    if(!s) return;
+    layout(`
+    <div class="card form-container-card">
+        <h2 class="form-header-title">Buat Laporan Baru</h2>
+        <p class="form-header-desc">Sampaikan laporan, pengaduan, atau saran Anda untuk lingkungan RW.</p>
+        <form onsubmit="handleCreateTicket(event)">
+            <div class="form-group">
+                <label class="form-label">Jenis</label>
+                <select name="type" class="form-control" required>
+                    <option value="laporan">Laporan</option>
+                    <option value="pengaduan">Pengaduan</option>
+                    <option value="saran">Saran</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Judul</label>
+                <input type="text" name="title" class="form-control" required placeholder="Judul singkat laporan Anda">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Deskripsi</label>
+                <textarea name="description" class="form-control" required placeholder="Jelaskan detail laporan Anda"></textarea>
+            </div>
+            <div style="display:flex; gap:1rem;">
+                <button type="submit" class="btn btn-primary">Kirim</button>
+                <a href="#/dashboard" class="btn btn-secondary">Batal</a>
+            </div>
+        </form>
+    </div>`);
+}
+
+function handleCreateTicket(e){
+    e.preventDefault();
+    const s = requireLogin();
+    if(!s) return;
+    const f = e.target;
+    const tickets = getTickets();
+    tickets.push({
+        id: newId(),
+        user_id: s.user_id,
+        type: f.type.value,
+        title: f.title.value.trim(),
+        description: f.description.value.trim(),
+        status: 'pending',
+        created_at: Date.now()
+    });
+    saveTickets(tickets);
+    navigate('/dashboard?msg=created');
+    render();
+}
+
+/* ==========================================================================
+   Edit Ticket
+   ========================================================================== */
+function renderEdit(idStr){
+    const s = requireLogin();
+    if(!s) return;
+    const id = Number(idStr);
+    const tickets = getTickets();
+    const t = tickets.find(t => t.id === id);
+    if(!t || (s.role !== 'admin' && t.user_id !== s.user_id)){
+        navigate('/dashboard?msg=not_found');
+        return render();
+    }
+    layout(`
+    <div class="card form-container-card">
+        <h2 class="form-header-title">Edit Laporan</h2>
+        <p class="form-header-desc">Perbarui detail laporan Anda di bawah ini.</p>
+        <form onsubmit="handleEditTicket(event, ${t.id})">
+            <div class="form-group">
+                <label class="form-label">Jenis</label>
+                <select name="type" class="form-control" required>
+                    <option value="laporan" ${t.type==='laporan'?'selected':''}>Laporan</option>
+                    <option value="pengaduan" ${t.type==='pengaduan'?'selected':''}>Pengaduan</option>
+                    <option value="saran" ${t.type==='saran'?'selected':''}>Saran</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Judul</label>
+                <input type="text" name="title" class="form-control" required value="${escapeHtml(t.title)}">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Deskripsi</label>
+                <textarea name="description" class="form-control" required>${escapeHtml(t.description)}</textarea>
+            </div>
+            <div style="display:flex; gap:1rem;">
+                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                <a href="#/dashboard" class="btn btn-secondary">Batal</a>
+            </div>
+        </form>
+    </div>`);
+}
+
+function handleEditTicket(e, id){
+    e.preventDefault();
+    const f = e.target;
+    const tickets = getTickets();
+    const t = tickets.find(t => t.id === id);
+    if(t){
+        t.type = f.type.value;
+        t.title = f.title.value.trim();
+        t.description = f.description.value.trim();
+        saveTickets(tickets);
+    }
+    navigate('/dashboard?msg=updated');
+    render();
+}
+
+/* ==========================================================================
+   KALKULATOR PAJAK & ZAKAT  (fitur tambahan, tidak perlu login)
+   ========================================================================== */
+const TAB_CONFIG = {
+    'pph-final': { inputs: ['pf-omzet-bulan','pf-omzet-kumulatif'], resultId: 'result-pph-final', emptyId: 'pf-empty', printId: 'print-pph-final' },
+    'zakat-profesi': { inputs: ['zp-penghasilan','zp-harga-emas'], resultId: 'result-zakat-profesi', emptyId: 'zp-empty', printId: 'print-zakat-profesi' },
+    'zakat-maal': { inputs: ['zm-harta','zm-hutang','zm-harga-emas'], resultId: 'result-zakat-maal', emptyId: 'zm-empty', printId: 'print-zakat-maal' }
+};
+let marketCache = { usdIdr: null, gold24k: null, updatedAt: null };
+let pendingGoldFill = null;
+
+function renderKalkulator(params){
+    const tab = params.get('tab') || 'pph-final';
+    const tabLink = t => `#/kalkulator?tab=${t}`;
+
+    let panelHtml = '';
+    if(tab === 'zakat-profesi') panelHtml = panelZakatProfesi();
+    else if(tab === 'zakat-maal') panelHtml = panelZakatMaal();
+    else panelHtml = panelPphFinal();
+
+    layout(`
+    <div class="calc-header">
+        <span class="eyebrow-chip" style="background: var(--accent-light); border-color: #a7f3d0; color: var(--accent-dark);"><i class='bx bx-shield-quarter'></i> Dihitung di perangkat Anda &mdash; 100% Privat</span>
+        <h1 style="font-family: var(--font-serif); font-size: 2.2rem; margin-top: 1rem; margin-bottom: .6rem;">Kalkulator Pajak &amp; Zakat UMKM</h1>
+        <p style="color: var(--muted); max-width: 640px; font-size: .95rem;">Alat bantu bagi warga pelaku UMKM untuk menghitung estimasi Pajak Final UMKM, Zakat Penghasilan, dan Zakat Maal. Semua proses berjalan sepenuhnya di browser Anda &mdash; tidak ada data yang dikirim atau disimpan ke server mana pun.</p>
+    </div>
+
+    <div class="market-section">
+        <div class="market-head">
+            <div class="market-title"><span class="live-dot"></span> Data Pasar Hari Ini</div>
+            <div class="market-meta">
+                <span id="market-updated">Memuat data&hellip;</span>
+                <button class="refresh-btn" id="btn-refresh" onclick="muatDataPasar()"><span class="spin-icon">&#8635;</span> Perbarui</button>
+            </div>
+        </div>
+        <div class="market-error" id="market-error">Gagal memuat data pasar. Periksa koneksi internet Anda, lalu klik &quot;Perbarui&quot;. Anda tetap bisa mengisi harga emas secara manual di kalkulator di bawah.</div>
+        <div class="market-grid">
+            <div class="market-card">
+                <div><div class="market-label">Kurs 1 USD</div><div class="market-value is-skeleton" id="fx-usd">&mdash;</div></div>
+            </div>
+            <div class="market-card is-gold">
+                <div><div class="market-label">Harga Emas 24K / gram</div><div class="market-value is-skeleton" id="gold-24k">&mdash;</div></div>
+                <button class="use-price-btn" onclick="gunakanHargaEmas()">Gunakan harga ini &rarr;</button>
+            </div>
+        </div>
+        <p class="market-note">Kurs bersumber dari open.er-api.com dan harga emas dunia (XAU/USD) dari gold-api.com, dikonversi otomatis ke Rupiah per gram. Harga emas fisik di toko lokal biasanya sedikit berbeda karena ada biaya cetak dan margin penjual.</p>
+    </div>
+
+    <div class="civic-section">
+        <div class="section-heading" style="text-align:left; margin: 0 0 0;">
+            <span class="eyebrow-chip" style="background: var(--civic-light); border-color: #fecdd3; color: var(--civic);"><i class='bx bx-landmark'></i> Kaitan Kewarganegaraan</span>
+            <h2 style="font-family: var(--font-serif); font-size: 1.6rem; margin-top: .9rem;">Pajak dan Zakat Bukan Sekadar Hitungan Angka</h2>
+            <p style="color: var(--muted); font-size: .92rem; max-width: 680px;">Keduanya berakar pada dasar hukum dan nilai bersama yang mengikat setiap warga negara Indonesia &mdash; satu mengatur hubungan dengan negara, satu mengatur hubungan dengan sesama.</p>
+        </div>
+        <div class="pasal-grid">
+            <div class="pasal-card">
+                <span class="pasal-num-bg">23A</span>
+                <span class="pasal-tag">Pasal 23A UUD 1945</span>
+                <h3>Pajak Sebagai Kewajiban Konstitusional</h3>
+                <p>Pajak dan pungutan lain yang bersifat memaksa untuk keperluan negara harus diatur dengan undang-undang. Ketentuan ini menjadikan kepatuhan membayar pajak bukan pilihan, melainkan kewajiban hukum sekaligus bentuk partisipasi warga dalam membiayai pembangunan bersama.</p>
+            </div>
+            <div class="pasal-card is-zakat">
+                <span class="pasal-num-bg">29</span>
+                <span class="pasal-tag">Pasal 29 UUD 1945</span>
+                <h3>Zakat Sebagai Kemerdekaan Beribadah</h3>
+                <p>Negara menjamin kemerdekaan setiap penduduk untuk memeluk agama dan beribadah menurut keyakinannya. Bagi umat Muslim yang telah mencapai nisab, zakat adalah kewajiban keagamaan yang dijalankan justru karena kebebasan itu dilindungi negara.</p>
+            </div>
+            <div class="pasal-card">
+                <span class="pasal-num-bg">III</span>
+                <span class="pasal-tag">Pancasila &middot; Sila Ke-3</span>
+                <h3>Gotong Royong dalam Angka</h3>
+                <p>Persatuan Indonesia hidup dalam hal-hal kecil: sebagian penghasilan disisihkan demi kepentingan bersama. Pajak membiayai fasilitas publik yang dipakai semua orang, zakat menyalurkan sebagian harta pada mereka yang membutuhkan.</p>
+            </div>
+            <div class="pasal-card is-zakat">
+                <span class="pasal-num-bg">V</span>
+                <span class="pasal-tag">Pancasila &middot; Sila Ke-5</span>
+                <h3>Keadilan Sosial yang Terukur</h3>
+                <p>Keadilan sosial bagi seluruh rakyat Indonesia tercermin dalam prinsip pajak dan zakat yang sama: mereka yang mampu berkontribusi lebih besar, demi pemerataan kesejahteraan bangsa.</p>
+            </div>
+        </div>
+        <div class="civic-note">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="46" stroke="#d97706" stroke-width="2.5" stroke-dasharray="4 3"/>
+                <circle cx="50" cy="50" r="36" stroke="#d97706" stroke-width="1.5"/>
+                <path id="stampCircle" d="M 50 14 A 36 36 0 1 1 49.9 14" fill="none"/>
+                <text font-family="JetBrains Mono, monospace" font-size="7.2" font-weight="700" fill="#d97706" letter-spacing="1.5">
+                    <textPath href="#stampCircle" startOffset="2%">SADAR PAJAK &bull; SADAR ZAKAT &bull; SADAR WARGA &bull;</textPath>
+                </text>
+                <text x="50" y="54" text-anchor="middle" font-family="Fraunces, serif" font-size="15" font-weight="700" fill="#fff">2,5%</text>
+                <text x="50" y="66" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="5.5" fill="#d97706">&amp; 0,5%</text>
+            </svg>
+            <p><strong>Kesadaran membayar pajak dan menunaikan zakat</strong> adalah bagian dari kesadaran bernegara &mdash; bentuk bela negara non-fisik sekaligus tanggung jawab sosial-keagamaan. Kalkulator di bawah ini dibuat agar masyarakat, khususnya pelaku UMKM, dapat memahami dan memenuhi kedua kewajiban itu secara mandiri dan transparan, tanpa membagikan data pribadi ke pihak mana pun.</p>
+        </div>
+    </div>
+
+    <div class="calc-tabs">
+        <a href="${tabLink('pph-final')}" class="calc-tab ${tab==='pph-final'?'active':''}"><span class="num">01</span> Pajak UMKM</a>
+        <a href="${tabLink('zakat-profesi')}" class="calc-tab ${tab==='zakat-profesi'?'active':''}"><span class="num">02</span> Zakat Penghasilan</a>
+        <a href="${tabLink('zakat-maal')}" class="calc-tab ${tab==='zakat-maal'?'active':''}"><span class="num">03</span> Zakat Maal</a>
+    </div>
+
+    <div class="card card-pad animate-in">
+        ${panelHtml}
+    </div>
+
+    <p class="calc-disclaimer">Angka tarif dan nisab mengacu pada aturan umum yang berlaku (PPh Final UMKM 0,5% &amp; zakat 2,5% dari nisab 85 gram emas). Selalu cek aturan terbaru atau konsultasikan ke pihak berwenang / lembaga amil zakat untuk keputusan resmi.</p>
+    `);
+
+    renderMarketData();
+
+    if(pendingGoldFill && (tab === 'zakat-profesi' || tab === 'zakat-maal')){
+        const formatted = pendingGoldFill.toLocaleString('id-ID');
+        if(tab === 'zakat-profesi'){ const el = document.getElementById('zp-harga-emas'); if(el) el.value = formatted; }
+        if(tab === 'zakat-maal'){ const el = document.getElementById('zm-harga-emas'); if(el) el.value = formatted; }
+        pendingGoldFill = null;
+    }
+}
+
+function resetForm(tab){
+    const cfg = TAB_CONFIG[tab];
+    if(!cfg) return;
+    cfg.inputs.forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+    const resultEl = document.getElementById(cfg.resultId);
+    const emptyEl = document.getElementById(cfg.emptyId);
+    const printEl = document.getElementById(cfg.printId);
+    if(resultEl) resultEl.style.display = 'none';
+    if(emptyEl) emptyEl.style.display = 'block';
+    if(printEl) printEl.classList.remove('show');
+}
+
+function cetakHasil(){
+    window.print();
+}
+
+/* ---------- Data pasar realtime (kurs & harga emas) ---------- */
+function renderMarketData(){
+    if(marketCache.updatedAt){
+        applyMarketDataToDom();
+    } else {
+        muatDataPasar();
+    }
+}
+
+function applyMarketDataToDom(){
+    const fxEl = document.getElementById('fx-usd');
+    const goldEl = document.getElementById('gold-24k');
+    const statusEl = document.getElementById('market-updated');
+    if(!fxEl || !goldEl || !statusEl) return;
+    fxEl.classList.remove('is-skeleton');
+    goldEl.classList.remove('is-skeleton');
+    fxEl.textContent = formatRp(marketCache.usdIdr);
+    goldEl.textContent = formatRp(marketCache.gold24k);
+    statusEl.textContent = 'Diperbarui pukul ' + new Date(marketCache.updatedAt).toLocaleTimeString('id-ID');
+}
+
+const FX_API = 'https://open.er-api.com/v6/latest/USD';
+const GOLD_API = 'https://api.gold-api.com/price/XAU';
+const GRAM_PER_TROY_OZ = 31.1034768;
+
+async function muatDataPasar(){
+    const btn = document.getElementById('btn-refresh');
+    const errBox = document.getElementById('market-error');
+    const statusEl = document.getElementById('market-updated');
+    if(!btn) return;
+    btn.classList.add('loading');
+    errBox.classList.remove('show');
+    document.querySelectorAll('.market-value').forEach(el => el.classList.add('is-skeleton'));
+
+    try {
+        const [fxRes, goldRes] = await Promise.all([ fetch(FX_API), fetch(GOLD_API) ]);
+        if(!fxRes.ok || !goldRes.ok) throw new Error('Gagal menghubungi server data pasar.');
+        const fx = await fxRes.json();
+        const gold = await goldRes.json();
+        const usdIdr = fx && fx.rates ? fx.rates.IDR : null;
+        const goldUsdPerOz = gold ? (gold.price ?? gold.rate ?? gold.XAU ?? null) : null;
+        if(!usdIdr || !goldUsdPerOz) throw new Error('Format data tidak sesuai.');
+
+        const gram24kIdr = (goldUsdPerOz / GRAM_PER_TROY_OZ) * usdIdr;
+        marketCache = { usdIdr, gold24k: gram24kIdr, updatedAt: Date.now() };
+        applyMarketDataToDom();
+    } catch(e){
+        errBox.classList.add('show');
+        statusEl.textContent = 'Gagal memuat';
+        document.querySelectorAll('.market-value').forEach(el => { el.textContent = '\u2014'; el.classList.remove('is-skeleton'); });
+    } finally {
+        btn.classList.remove('loading');
+    }
+}
+
+function gunakanHargaEmas(){
+    if(!marketCache.gold24k) return;
+    pendingGoldFill = Math.round(marketCache.gold24k);
+    navigate('/kalkulator?tab=zakat-profesi');
+}
+
+function panelPphFinal(){
+    return `
+    <h2 class="calc-panel-title">Pajak Final UMKM (PPh 0,5%)</h2>
+    <p class="calc-panel-desc">Untuk usaha dengan omzet bruto setahun di bawah Rp4,8 miliar. Tarif final 0,5% dari omzet bulanan, dengan fasilitas bebas pajak untuk omzet kumulatif hingga Rp500 juta per tahun.</p>
+    <div class="calc-grid">
+        <div>
+            <div class="form-group">
+                <label class="form-label">Omzet bulan ini</label>
+                <div class="input-money"><input type="text" inputmode="numeric" class="form-control" id="pf-omzet-bulan" placeholder="0" oninput="this.value = formatMoneyLive(this.value)"></div>
+                <div class="form-hint">Total penjualan/pendapatan bruto bulan ini, sebelum dipotong biaya.</div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Omzet kumulatif tahun ini</label>
+                <div class="input-money"><input type="text" inputmode="numeric" class="form-control" id="pf-omzet-kumulatif" placeholder="0" oninput="this.value = formatMoneyLive(this.value)"></div>
+                <div class="form-hint">Jumlah omzet dari Januari sampai sebelum bulan ini. Isi 0 jika ini bulan pertama berjalan.</div>
+            </div>
+            <div class="calc-action-row">
+                <button class="btn btn-accent" onclick="hitungPPhFinal()">Hitung Pajak Bulan Ini</button>
+                <button class="btn btn-secondary" onclick="resetForm('pph-final')" title="Reset form"><i class='bx bx-reset'></i></button>
+            </div>
+        </div>
+        <div class="ledger" id="ledger-pph-final">
+            <div class="ledger-label">Ringkasan Hitungan</div>
+            <div class="ledger-empty" id="pf-empty">Silakan isi nominal omzet di sebelah kiri, lalu klik hitung. Hasil perhitungan Anda akan muncul di sini.</div>
+            <div class="ledger-result" id="result-pph-final" style="display:none;">
+                <div class="ledger-amount" id="pf-amount">Rp 0</div>
+                <div class="ledger-row"><span>Omzet bulan ini</span><span id="pf-r-omzet">&mdash;</span></div>
+                <div class="ledger-row"><span>Sisa jatah bebas pajak</span><span id="pf-r-sisa">&mdash;</span></div>
+                <div class="ledger-row"><span>Omzet kena pajak</span><span id="pf-r-kena">&mdash;</span></div>
+                <div class="ledger-row"><span>Tarif Pajak</span><span>0,5%</span></div>
+                <div class="ledger-note" id="pf-note"></div>
+                <button class="print-btn" id="print-pph-final" onclick="cetakHasil()"><i class='bx bx-printer'></i> Cetak / Simpan sebagai PDF</button>
+            </div>
+        </div>
+    </div>`;
+}
+
+function hitungPPhFinal(){
+    const omzetBulan = parseMoney(document.getElementById('pf-omzet-bulan'));
+    const omzetKumulatif = parseMoney(document.getElementById('pf-omzet-kumulatif'));
+    const BATAS_BEBAS = 500000000;
+
+    const sisaJatah = Math.max(BATAS_BEBAS - omzetKumulatif, 0);
+    const omzetKenaPajak = Math.max(omzetBulan - sisaJatah, 0);
+    const pajak = omzetKenaPajak * 0.005;
+
+    document.getElementById('pf-r-omzet').textContent = formatRp(omzetBulan);
+    document.getElementById('pf-r-sisa').textContent = formatRp(sisaJatah);
+    document.getElementById('pf-r-kena').textContent = formatRp(omzetKenaPajak);
+
+    const amountEl = document.getElementById('pf-amount');
+    amountEl.textContent = formatRp(pajak);
+    amountEl.classList.toggle('warn', pajak > 0);
+
+    const note = document.getElementById('pf-note');
+    if(omzetKenaPajak === 0){
+        note.textContent = 'Omzet bulan ini masih tertutup jatah bebas pajak tahunan, jadi belum ada PPh final yang harus dibayar.';
+    } else if (sisaJatah > 0){
+        note.textContent = 'Sebagian omzet masih tertutup jatah bebas pajak, sisanya dikenakan tarif 0,5%.';
+    } else {
+        note.textContent = 'Jatah bebas pajak tahunan sudah terpakai, sehingga seluruh omzet bulan ini dikenakan tarif 0,5%.';
+    }
+
+    document.getElementById('result-pph-final').style.display = 'block';
+    document.getElementById('pf-empty').style.display = 'none';
+    document.getElementById('print-pph-final').classList.add('show');
+}
+
+function panelZakatProfesi(){
+    return `
+    <h2 class="calc-panel-title">Zakat Penghasilan / Profesi</h2>
+    <p class="calc-panel-desc">Zakat atas gaji, honor, atau pendapatan usaha bersih, sebesar 2,5% bila telah mencapai nisab (setara 85 gram emas per tahun, atau senilai itu per bulan).</p>
+    <div class="calc-grid">
+        <div>
+            <div class="form-group">
+                <label class="form-label">Penghasilan bersih per bulan</label>
+                <div class="input-money"><input type="text" inputmode="numeric" class="form-control" id="zp-penghasilan" placeholder="0" oninput="this.value = formatMoneyLive(this.value)"></div>
+                <div class="form-hint">Pendapatan setelah dikurangi kebutuhan pokok yang wajar.</div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Harga emas saat ini (per gram)</label>
+                <div class="input-money"><input type="text" inputmode="numeric" class="form-control" id="zp-harga-emas" placeholder="contoh: 1.500.000" oninput="this.value = formatMoneyLive(this.value)"></div>
+                <div class="form-hint">Cek harga emas terbaru untuk mendapatkan hasil perhitungan yang paling akurat.</div>
+            </div>
+            <div class="calc-action-row">
+                <button class="btn btn-accent" onclick="hitungZakatProfesi()">Hitung Zakat Penghasilan</button>
+                <button class="btn btn-secondary" onclick="resetForm('zakat-profesi')" title="Reset form"><i class='bx bx-reset'></i></button>
+            </div>
+        </div>
+        <div class="ledger" id="ledger-zakat-profesi">
+            <div class="ledger-label">Ringkasan Hitungan</div>
+            <div class="ledger-empty" id="zp-empty">Silakan isi nominal penghasilan dan harga emas, lalu klik hitung.</div>
+            <div class="ledger-result" id="result-zakat-profesi" style="display:none;">
+                <div class="ledger-amount" id="zp-amount">Rp 0</div>
+                <div class="ledger-row"><span>Penghasilan bulan ini</span><span id="zp-r-penghasilan">&mdash;</span></div>
+                <div class="ledger-row"><span>Nisab per bulan</span><span id="zp-r-nisab">&mdash;</span></div>
+                <div class="ledger-row"><span>Status Zakat</span><span id="zp-r-status">&mdash;</span></div>
+                <div class="ledger-note">Nisab dihitung dari 85 gram emas dibagi 12 bulan, mengikuti pendekatan zakat profesi bulanan yang umum dipakai.</div>
+                <button class="print-btn" id="print-zakat-profesi" onclick="cetakHasil()"><i class='bx bx-printer'></i> Cetak / Simpan sebagai PDF</button>
+            </div>
+        </div>
+    </div>`;
+}
+
+function hitungZakatProfesi(){
+    const penghasilan = parseMoney(document.getElementById('zp-penghasilan'));
+    const hargaEmas = parseMoney(document.getElementById('zp-harga-emas'));
+    const nisabTahun = hargaEmas * 85;
+    const nisabBulan = nisabTahun / 12;
+
+    const wajib = penghasilan >= nisabBulan && nisabBulan > 0;
+    const zakat = wajib ? penghasilan * 0.025 : 0;
+
+    document.getElementById('zp-r-penghasilan').textContent = formatRp(penghasilan);
+    document.getElementById('zp-r-nisab').textContent = nisabBulan > 0 ? formatRp(nisabBulan) : '\u2014 (isi harga emas)';
+    document.getElementById('zp-r-status').textContent = nisabBulan === 0 ? '\u2014' : (wajib ? 'Wajib Zakat' : 'Belum Mencapai Nisab');
+
+    const amountEl = document.getElementById('zp-amount');
+    amountEl.textContent = formatRp(zakat);
+    amountEl.classList.toggle('warn', zakat > 0);
+
+    document.getElementById('result-zakat-profesi').style.display = 'block';
+    document.getElementById('zp-empty').style.display = 'none';
+    document.getElementById('print-zakat-profesi').classList.add('show');
+}
+
+function panelZakatMaal(){
+    return `
+    <h2 class="calc-panel-title">Zakat Maal (Harta)</h2>
+    <p class="calc-panel-desc">Zakat atas harta simpanan (tabungan, emas, aset lancar usaha) yang telah dimiliki selama satu tahun penuh (haul) dan mencapai nisab 85 gram emas.</p>
+    <div class="calc-grid">
+        <div>
+            <div class="form-group">
+                <label class="form-label">Total harta tersimpan</label>
+                <div class="input-money"><input type="text" inputmode="numeric" class="form-control" id="zm-harta" placeholder="0" oninput="this.value = formatMoneyLive(this.value)"></div>
+                <div class="form-hint">Tabungan, emas, dan aset lancar yang sudah disimpan minimal 1 tahun.</div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Hutang jatuh tempo (jika ada)</label>
+                <div class="input-money"><input type="text" inputmode="numeric" class="form-control" id="zm-hutang" placeholder="0" oninput="this.value = formatMoneyLive(this.value)"></div>
+                <div class="form-hint">Hutang yang harus dibayar sekarang, dikurangkan dari total harta.</div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Harga emas saat ini (per gram)</label>
+                <div class="input-money"><input type="text" inputmode="numeric" class="form-control" id="zm-harga-emas" placeholder="contoh: 1.500.000" oninput="this.value = formatMoneyLive(this.value)"></div>
+            </div>
+            <div class="calc-action-row">
+                <button class="btn btn-accent" onclick="hitungZakatMaal()">Hitung Zakat Maal</button>
+                <button class="btn btn-secondary" onclick="resetForm('zakat-maal')" title="Reset form"><i class='bx bx-reset'></i></button>
+            </div>
+        </div>
+        <div class="ledger" id="ledger-zakat-maal">
+            <div class="ledger-label">Ringkasan Hitungan</div>
+            <div class="ledger-empty" id="zm-empty">Lengkapi data harta dan harga emas di sebelah kiri, lalu klik hitung.</div>
+            <div class="ledger-result" id="result-zakat-maal" style="display:none;">
+                <div class="ledger-amount" id="zm-amount">Rp 0</div>
+                <div class="ledger-row"><span>Harta bersih</span><span id="zm-r-bersih">&mdash;</span></div>
+                <div class="ledger-row"><span>Nisab (85 gram emas)</span><span id="zm-r-nisab">&mdash;</span></div>
+                <div class="ledger-row"><span>Status Zakat</span><span id="zm-r-status">&mdash;</span></div>
+                <div class="ledger-note">Berlaku jika harta sudah dimiliki genap satu tahun (haul). Jika belum, tunggu hingga genap setahun.</div>
+                <button class="print-btn" id="print-zakat-maal" onclick="cetakHasil()"><i class='bx bx-printer'></i> Cetak / Simpan sebagai PDF</button>
+            </div>
+        </div>
+    </div>`;
+}
+
+function hitungZakatMaal(){
+    const harta = parseMoney(document.getElementById('zm-harta'));
+    const hutang = parseMoney(document.getElementById('zm-hutang'));
+    const hargaEmas = parseMoney(document.getElementById('zm-harga-emas'));
+    const nisab = hargaEmas * 85;
+
+    const hartaBersih = Math.max(harta - hutang, 0);
+    const wajib = nisab > 0 && hartaBersih >= nisab;
+    const zakat = wajib ? hartaBersih * 0.025 : 0;
+
+    document.getElementById('zm-r-bersih').textContent = formatRp(hartaBersih);
+    document.getElementById('zm-r-nisab').textContent = nisab > 0 ? formatRp(nisab) : '\u2014 (isi harga emas)';
+    document.getElementById('zm-r-status').textContent = nisab === 0 ? '\u2014' : (wajib ? 'Wajib Zakat' : 'Belum Mencapai Nisab');
+
+    const amountEl = document.getElementById('zm-amount');
+    amountEl.textContent = formatRp(zakat);
+    amountEl.classList.toggle('warn', zakat > 0);
+
+    document.getElementById('result-zakat-maal').style.display = 'block';
+    document.getElementById('zm-empty').style.display = 'none';
+    document.getElementById('print-zakat-maal').classList.add('show');
+}
+</script>
+</body>
+</html>
